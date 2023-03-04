@@ -14,8 +14,10 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="flex min-h-screen flex-col items-center justify-center bg-black">
-        <div className="container flex flex-col items-center justify-center px-4 py-16 ">
-          <div className="flex flex-col items-center">
+        <div className="mb-16 flex flex-col items-center">
+          <h1 className="text-6xl uppercase text-indigo-50">yttgen</h1>
+          <p className="mt-2 text-white">YouTube title generator</p>
+          <div className="container flex flex-col items-center justify-center px-4 py-16 font-medium">
             <AuthShowcase />
           </div>
         </div>
@@ -41,6 +43,21 @@ const AuthShowcase: React.FC = () => {
     }
   )
 
+  if (!session?.user) {
+    return (
+      <button
+        className="rounded-full bg-white/10 px-10 py-3 font-semibold text-white no-underline transition hover:bg-white/20"
+        onClick={() =>
+          void supabaseClient.auth.signInWithOAuth({
+            provider: 'discord'
+          })
+        }
+      >
+        Sign in
+      </button>
+    )
+  }
+
   return isFetching ? (
     <p>Fetching...</p>
   ) : (
@@ -48,25 +65,24 @@ const AuthShowcase: React.FC = () => {
       <p className="text-center text-2xl text-slate-50">
         {session && <span>Logged in as {session.user?.email}</span>}
       </p>
-      <button
-        className="border p-2 text-violet-50"
-        onClick={() => void refetchGenTitle()}
-      >
-        Generate Title
-      </button>
-      <pre>{data?.success && <span> - {data.completion}</span>}</pre>
+      {session?.user.email !== 'williamrshepherd@gmail.com' ? undefined : (
+        <div className="">
+          <button
+            className="border p-2 text-violet-50"
+            onClick={() => void refetchGenTitle()}
+          >
+            Generate Title
+          </button>
+          <pre className="text-white">
+            {data?.success && <p>{data.completion}</p>}
+          </pre>
+        </div>
+      )}
       <button
         className="rounded-full bg-white/10 px-10 py-3 font-semibold text-white no-underline transition hover:bg-white/20"
-        onClick={
-          session
-            ? () => void supabaseClient.auth.signOut()
-            : () =>
-                void supabaseClient.auth.signInWithOAuth({
-                  provider: 'discord'
-                })
-        }
+        onClick={() => void supabaseClient.auth.signOut()}
       >
-        {session ? 'Sign out' : 'Sign in'}
+        Sign out
       </button>
     </div>
   )
