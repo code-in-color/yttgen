@@ -1,20 +1,26 @@
-import { type AppType } from "next/app";
-import { type Session } from "next-auth";
-import { SessionProvider } from "next-auth/react";
+import { type AppType } from 'next/app'
+import { SessionContextProvider } from '@supabase/auth-helpers-react'
+import type { Session } from '@supabase/auth-helpers-react'
+import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs'
+import type { Database } from '../common/database.types'
+import { api } from '~/utils/api'
 
-import { api } from "~/utils/api";
+import '~/styles/globals.css'
 
-import "~/styles/globals.css";
-
-const MyApp: AppType<{ session: Session | null }> = ({
+const MyApp: AppType<{ initialSession: Session | null }> = ({
   Component,
-  pageProps: { session, ...pageProps },
+  pageProps
 }) => {
-  return (
-    <SessionProvider session={session}>
-      <Component {...pageProps} />
-    </SessionProvider>
-  );
-};
+  const supabaseClient = createBrowserSupabaseClient<Database>()
 
-export default api.withTRPC(MyApp);
+  return (
+    <SessionContextProvider
+      supabaseClient={supabaseClient}
+      initialSession={pageProps.initialSession}
+    >
+      <Component {...pageProps} />
+    </SessionContextProvider>
+  )
+}
+
+export default api.withTRPC(MyApp)
