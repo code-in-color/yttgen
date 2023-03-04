@@ -74,7 +74,7 @@ const AuthShowcase: React.FC = () => {
             Generate Title
           </button>
           <pre className="text-white">
-            {data?.success && <span> - {data.completion}</span>}
+            {data?.success && <p>{data.completion}</p>}
           </pre>
         </div>
       )}
