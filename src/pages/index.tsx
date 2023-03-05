@@ -3,7 +3,8 @@ import { type NextPage } from 'next'
 import Head from 'next/head'
 
 import React from 'react'
-import { api } from '~/utils/api'
+import { getBaseUrl } from '~/common/utils'
+import { api } from '~/server/api/api'
 
 const Home: NextPage = () => {
   return (
@@ -49,7 +50,10 @@ const AuthShowcase: React.FC = () => {
         className="rounded-full bg-white/10 px-10 py-3 font-semibold text-white no-underline transition hover:bg-white/20"
         onClick={() =>
           void supabaseClient.auth.signInWithOAuth({
-            provider: 'discord'
+            provider: 'discord',
+            options: {
+              redirectTo: getBaseUrl()
+            }
           })
         }
       >

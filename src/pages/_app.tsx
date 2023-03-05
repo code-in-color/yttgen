@@ -3,7 +3,7 @@ import { SessionContextProvider } from '@supabase/auth-helpers-react'
 import type { Session } from '@supabase/auth-helpers-react'
 import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import type { Database } from '../common/database.types'
-import { api } from '~/utils/api'
+import { api } from '~/server/api/api'
 
 import '~/styles/globals.css'
 
