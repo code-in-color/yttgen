@@ -8,9 +8,9 @@ import { httpBatchLink, loggerLink } from '@trpc/client'
 import { createTRPCNext } from '@trpc/next'
 import { type inferRouterInputs, type inferRouterOutputs } from '@trpc/server'
 import superjson from 'superjson'
-import { getBaseUrl } from '~/common/utils'
+import { getBaseUrl } from '@common/utils'
 
-import { type AppRouter } from '~/server/api/root'
+import { type AppRouter } from '@server/api/root'
 
 /** A set of type-safe react-query hooks for your tRPC API. */
 export const api = createTRPCNext<AppRouter>({

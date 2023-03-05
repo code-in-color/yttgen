@@ -3,9 +3,9 @@ import { SessionContextProvider } from '@supabase/auth-helpers-react'
 import type { Session } from '@supabase/auth-helpers-react'
 import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import type { Database } from '../common/database.types'
-import { api } from '~/server/api/api'
+import { api } from '@server/api/api'
 
-import '~/styles/globals.css'
+import '../styles/globals.css'
 
 const MyApp: AppType<{ initialSession: Session | null }> = ({
   Component,
