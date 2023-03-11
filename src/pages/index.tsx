@@ -2,8 +2,10 @@ import { useSession, useSupabaseClient } from '@supabase/auth-helpers-react'
 import { type NextPage } from 'next'
 import Head from 'next/head'
 
-import React from 'react'
-import { api } from '~/utils/api'
+import React, { useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { getBaseUrl } from '@common/utils'
+import { api } from '@server/api/api'
 
 const Home: NextPage = () => {
   return (
@@ -28,54 +30,82 @@ const Home: NextPage = () => {
 
 export default Home
 
+let renderCount = 0
+
 const AuthShowcase: React.FC = () => {
   const supabaseClient = useSupabaseClient()
   const session = useSession()
-
+  const [completion, setGeneratedTitle] = useState('')
+  const a = api.youtube.generateTitle.useMutation({
+    onSuccess: (title) => title && setGeneratedTitle(title)
+  })
   const {
-    data,
-    isFetching,
-    refetch: refetchGenTitle
-  } = api.youtube.generateTitle.useQuery(
-    "Spending some time learning more about OpenAI's APIs, so I have an excuse to create content. I'm also learning about tRPC integration with Nextjs + Supabase for auth and db.",
-    {
-      enabled: false
+    register,
+    formState: { errors },
+    watch,
+    getValues
+  } = useForm({
+    defaultValues: {
+      description: ''
     }
-  )
+  })
+
+  const onGenerateTitleClicked = () => {
+    const { description } = getValues()
+    a.mutate(description)
+    console.log(description)
+  }
+
+  React.useEffect(() => {
+    renderCount++
+  }, [watch])
 
   if (!session?.user) {
     return (
-      <button
-        className="rounded-full bg-white/10 px-10 py-3 font-semibold text-white no-underline transition hover:bg-white/20"
-        onClick={() =>
-          void supabaseClient.auth.signInWithOAuth({
-            provider: 'discord'
-          })
-        }
-      >
-        Sign in
-      </button>
+      <>
+        <p>
+          Redirect is to <pre>{getBaseUrl()}</pre>
+        </p>
+        <button
+          className="rounded-full bg-white/10 px-10 py-3 font-semibold text-white no-underline transition hover:bg-white/20"
+          onClick={() =>
+            void supabaseClient.auth.signInWithOAuth({
+              provider: 'discord',
+              options: {
+                redirectTo: getBaseUrl()
+              }
+            })
+          }
+        >
+          Sign in
+        </button>
+      </>
     )
   }
 
-  return isFetching ? (
-    <p>Fetching...</p>
-  ) : (
+  return (
     <div className="flex flex-col items-center justify-center gap-4">
+      <pre className="text-white">
+        {JSON.stringify({ renderCount, errors }, null, 2)}
+      </pre>
       <p className="text-center text-2xl text-slate-50">
         {session && <span>Logged in as {session.user?.email}</span>}
       </p>
       {session?.user.email !== 'williamrshepherd@gmail.com' ? undefined : (
         <div className="">
-          <button
-            className="border p-2 text-violet-50"
-            onClick={() => void refetchGenTitle()}
-          >
-            Generate Title
-          </button>
-          <pre className="text-white">
-            {data?.success && <p>{data.completion}</p>}
-          </pre>
+          <form className="flex flex-col gap-4">
+            <textarea {...register('description', { required: true })} />
+            {errors.description && <p>A prompt must be specified.</p>}
+
+            <button
+              type="button"
+              onClick={() => void onGenerateTitleClicked()}
+              className="border p-2 text-violet-50"
+            >
+              Generate Title
+            </button>
+          </form>
+          <pre className="text-white">{completion && <p>{completion}</p>}</pre>
         </div>
       )}
       <button
