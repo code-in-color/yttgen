@@ -4,7 +4,7 @@ export const getBaseUrl = () => {
     return 'https://${process.env.VERCEL_URL}'
 
   // Use relative url in browser
-  if (typeof window !== 'undefined') return
+  if (typeof window !== 'undefined') return ''
 
   // Use vercel url in SSR mode on Vercel
   if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`
