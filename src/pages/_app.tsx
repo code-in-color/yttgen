@@ -18,7 +18,9 @@ const MyApp: AppType<{ initialSession: Session | null }> = ({
       supabaseClient={supabaseClient}
       initialSession={pageProps.initialSession}
     >
-      <Component {...pageProps} />
+      <main className="flex min-h-screen flex-col items-center justify-center bg-black">
+        <Component {...pageProps} />
+      </main>
     </SessionContextProvider>
   )
 }
