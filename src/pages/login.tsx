@@ -17,7 +17,7 @@ const Login = () => {
 
   return (
     <button
-      className="bg-white/10 px-10 py-3 font-semibold text-black no-underline transition hover:bg-yellow-500/20"
+      className="border border-blue-600 px-10 py-3 font-semibold text-white no-underline transition hover:border-yellow-300"
       onClick={() =>
         void supabaseClient.auth.signInWithOAuth({
           provider: 'discord',

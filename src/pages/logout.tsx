@@ -1,25 +1,27 @@
-import { useSupabaseClient } from '@supabase/auth-helpers-react'
-import { useRouter } from 'next/router'
+import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react'
 import { useEffect } from 'react'
 
 const Logout = () => {
   const supabaseClient = useSupabaseClient()
-  const router = useRouter()
+  const user = useUser()
 
   useEffect(() => {
     const logout = async () => {
       try {
         await supabaseClient.auth.signOut()
-        void router.replace('/')
-        console.log('Logged out')
       } catch (error) {
-        console.error('Failed to logout', error)
+        console.error(error)
       }
     }
 
     void logout()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   })
+
+  return (
+    <div className="text-white">
+      {user ? <p>Logging out</p> : <p>Logged out</p>}
+    </div>
+  )
 }
 
 export default Logout

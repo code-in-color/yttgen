@@ -58,7 +58,7 @@ const Yttgen: React.FC = () => {
             <button
               type="button"
               onClick={() => void onGenerateTitleClicked()}
-              className="border p-2 text-violet-50"
+              className="border border-blue-600 px-10 py-3 font-semibold text-white no-underline transition hover:border-yellow-300"
             >
               Generate Title
             </button>
@@ -70,7 +70,7 @@ const Yttgen: React.FC = () => {
       )}
 
       <button
-        className="rounded-full bg-white/10 px-10 py-3 font-semibold text-white no-underline transition hover:bg-white/20"
+        className="border border-white px-10 py-3 font-semibold text-white no-underline transition hover:text-yellow-300"
         onClick={() => void router.replace('/logout')}
       >
         Logout
