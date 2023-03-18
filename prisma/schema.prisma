@@ -1,15 +1,27 @@
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
-    provider = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 datasource db {
-    provider = "postgresql"
-    url      = env("DATABASE_URL")
+  provider = "postgresql"
+  url      = env("SUPABASE_DATABASE_URL")
 }
 
 model Profile {
-    id     String @id
-    userId String
+  id String @id
+
+  generatedTitles GeneratedTitle[]
+
+  @@map("profiles")
+}
+
+model GeneratedTitle {
+  id     String @id @default(cuid())
+  user   String
+  prompt String
+  title  String
+
+  profile Profile @relation(fields: [user], references: [id])
+
+  @@map("generated_titles")
 }
