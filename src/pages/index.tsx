@@ -35,9 +35,15 @@ let renderCount = 0
 const AuthShowcase: React.FC = () => {
   const supabaseClient = useSupabaseClient()
   const session = useSession()
-  const [completion, setGeneratedTitle] = useState('')
-  const a = api.youtube.generateTitle.useMutation({
-    onSuccess: (title) => title && setGeneratedTitle(title)
+  const [generatedTitle, setGeneratedTitle] = useState('')
+  const saveTitle = api.youtube.saveTitle.useMutation()
+  const generateTitle = api.youtube.generateTitle.useMutation({
+    onSuccess: (title, prompt) => {
+      if (!title) return
+
+      saveTitle.mutate({ prompt: prompt.trim(), title: title.trim() })
+      setGeneratedTitle(title)
+    }
   })
   const {
     register,
@@ -52,7 +58,7 @@ const AuthShowcase: React.FC = () => {
 
   const onGenerateTitleClicked = () => {
     const { description } = getValues()
-    a.mutate(description)
+    generateTitle.mutate(description)
     console.log(description)
   }
 
@@ -62,24 +68,19 @@ const AuthShowcase: React.FC = () => {
 
   if (!session?.user) {
     return (
-      <>
-        <p>
-          Redirect is to <pre>{getBaseUrl()}</pre>
-        </p>
-        <button
-          className="rounded-full bg-white/10 px-10 py-3 font-semibold text-white no-underline transition hover:bg-white/20"
-          onClick={() =>
-            void supabaseClient.auth.signInWithOAuth({
-              provider: 'discord',
-              options: {
-                redirectTo: getBaseUrl()
-              }
-            })
-          }
-        >
-          Sign in
-        </button>
-      </>
+      <button
+        className="rounded-full bg-white/10 px-10 py-3 font-semibold text-white no-underline transition hover:bg-white/20"
+        onClick={() =>
+          void supabaseClient.auth.signInWithOAuth({
+            provider: 'discord',
+            options: {
+              redirectTo: getBaseUrl()
+            }
+          })
+        }
+      >
+        Sign in
+      </button>
     )
   }
 
@@ -105,7 +106,9 @@ const AuthShowcase: React.FC = () => {
               Generate Title
             </button>
           </form>
-          <pre className="text-white">{completion && <p>{completion}</p>}</pre>
+          <pre className="text-white">
+            {generatedTitle && <p>{generatedTitle}</p>}
+          </pre>
         </div>
       )}
       <button

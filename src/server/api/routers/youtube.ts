@@ -32,5 +32,28 @@ export const youtubeRouter = createTRPCRouter({
         const error = e as Error
         console.error('/completion Error ', error)
       }
+    }),
+  saveTitle: protectedProcedure
+    .input(
+      z.object({
+        prompt: z.string(),
+        title: z.string()
+      })
+    )
+    .mutation(async ({ input, ctx }): Promise<void> => {
+      const { prompt, title } = input
+      const { prisma, session } = ctx
+
+      try {
+        await prisma.generatedTitle.create({
+          data: {
+            prompt: prompt,
+            title: title,
+            user: session.user.id
+          }
+        })
+      } catch (error) {
+        console.error('`saveSomething` failed', error)
+      }
     })
 })
