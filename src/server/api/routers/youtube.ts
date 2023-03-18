@@ -4,6 +4,7 @@ import { InProduction } from '@common/constants'
 import { createTRPCRouter, protectedProcedure } from '@server/api/trpc'
 import { OpenAI } from '@common/config'
 import axios from 'axios'
+import { prisma } from '@server/db'
 
 const generatePrompt = (description: string) =>
   `Create catchy and click-baity YouTube title that's 🔥 using the following video description\n --- \n${description}\n ---`
@@ -55,5 +56,16 @@ export const youtubeRouter = createTRPCRouter({
       } catch (error) {
         console.error('`saveSomething` failed', error)
       }
-    })
+    }),
+  getTitleHistory: protectedProcedure.query(async ({ ctx }) => {
+    const { id: userId } = ctx.session.user
+    try {
+      const history = await prisma.generatedTitle.findMany({
+        where: { user: userId }
+      })
+      return history
+    } catch (error) {
+      console.error('`getTitleHistory` failed', error)
+    }
+  })
 })
