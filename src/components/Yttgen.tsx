@@ -52,7 +52,10 @@ const Yttgen: React.FC = () => {
       {session?.user.email !== 'williamrshepherd@gmail.com' ? undefined : (
         <div className="">
           <form className="flex flex-col gap-4">
-            <textarea {...register('description', { required: true })} />
+            <textarea
+              className="text-slate-900"
+              {...register('description', { required: true })}
+            />
             {errors.description && <p>A prompt must be specified.</p>}
 
             <button
