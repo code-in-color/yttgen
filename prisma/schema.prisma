@@ -21,6 +21,9 @@ model GeneratedTitle {
   prompt String
   title  String
 
+  createdAt DateTime  @default(now())
+  updatedAt DateTime?
+
   profile Profile @relation(fields: [user], references: [id])
 
   @@map("generated_titles")

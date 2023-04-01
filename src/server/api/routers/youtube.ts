@@ -57,7 +57,7 @@ export const youtubeRouter = createTRPCRouter({
         console.error('`saveSomething` failed', error)
       }
     }),
-  getTitleHistory: protectedProcedure.query(async ({ ctx }) => {
+  getTitles: protectedProcedure.query(async ({ ctx }) => {
     const { id: userId } = ctx.session.user
     try {
       const history = await prisma.generatedTitle.findMany({
@@ -67,5 +67,23 @@ export const youtubeRouter = createTRPCRouter({
     } catch (error) {
       console.error('`getTitleHistory` failed', error)
     }
-  })
+  }),
+  getTitle: protectedProcedure
+    .input(z.string())
+    .query(async ({ input, ctx }) => {
+      const { id: userId } = ctx.session.user
+      try {
+        const title = await prisma.generatedTitle.findUnique({
+          where: { id: input }
+        })
+
+        if (title?.user !== userId) {
+          throw new Error('Title does not belong to you')
+        }
+
+        return title
+      } catch (error) {
+        console.error('`getTitle` failed', error)
+      }
+    })
 })

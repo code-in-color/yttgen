@@ -13,7 +13,7 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <div className="mb-16 flex flex-col items-center">
+      <div className="flex flex-col items-center">
         <h1 className="text-6xl uppercase text-indigo-50">yttgen</h1>
         <p className="mt-2 text-white">YouTube title generator</p>
         <button

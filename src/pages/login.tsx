@@ -15,17 +15,27 @@ const Login = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user])
 
+  async function login() {
+    try {
+      await supabaseClient.auth.signInWithOAuth({
+        provider: 'discord',
+
+        options: {
+          redirectTo: getBaseUrl() + '/app'
+        }
+      })
+    } catch (e) {
+      console.error('Failed to login.', e)
+    }
+  }
+
   return (
     <button
       className="border border-blue-600 px-10 py-3 font-semibold text-white no-underline transition hover:border-yellow-300"
-      onClick={() =>
-        void supabaseClient.auth.signInWithOAuth({
-          provider: 'discord',
-          options: {
-            redirectTo: getBaseUrl() + '/app'
-          }
-        })
-      }
+      onClick={(e) => {
+        e.preventDefault()
+        void login()
+      }}
     >
       Login
     </button>
