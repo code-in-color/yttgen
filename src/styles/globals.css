@@ -1,3 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body {
+  @apply bg-black text-slate-50 flex min-h-screen flex-col items-center justify-center mx-auto max-w-7xl sm:px-6 lg:px-8
+}
