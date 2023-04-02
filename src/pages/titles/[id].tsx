@@ -45,7 +45,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
       props: {
         initialSession: session,
         user: session.user,
-        error: 'No `titleId` provided.'
+        error: '`titleId` not provided.'
       }
     }
   }
