@@ -38,8 +38,8 @@ const routes: PageRoute[] = [
 const Nav = () => {
   const user = useUser()
   const links = user
-    ? routes.filter((route) => route.id !== 'logout')
-    : routes.filter((route) => route.id !== 'login')
+    ? routes.filter((route) => route.id !== 'login')
+    : routes.filter((route) => route.id !== 'logout')
 
   return (
     <nav>
