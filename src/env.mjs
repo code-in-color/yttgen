@@ -21,6 +21,7 @@ const server = z.object({
  * built with invalid env vars. To expose them to the client, prefix them with `NEXT_PUBLIC_`.
  */
 const client = z.object({
+  NEXT_PUBLIC_ONESIGNAL_APP_ID: z.string()
   // NEXT_PUBLIC_CLIENTVAR: z.string().min(1),
 })
 
@@ -39,8 +40,9 @@ const processEnv = {
   GITHUB_CLIENT_SECRET: process.env.GITHUB_CLIENT_SECRET,
   NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL,
   NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
-  OPEN_AI_API_KEY: process.env.OPEN_AI_API_KEY
-  // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
+  OPEN_AI_API_KEY: process.env.OPEN_AI_API_KEY,
+  NEXT_PUBLIC_ONESIGNAL_APP_ID: process.env.NEXT_PUBLIC_ONESIGNAL_APP_ID
+  // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,s
 }
 
 // Don't touch the part below
