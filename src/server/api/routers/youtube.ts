@@ -59,6 +59,7 @@ export const youtubeRouter = createTRPCRouter({
     }),
   getTitles: protectedProcedure.query(async ({ ctx }) => {
     const { id: userId } = ctx.session.user
+    console.log('UserID', userId)
     try {
       const history = await prisma.generatedTitle.findMany({
         where: { user: userId }
