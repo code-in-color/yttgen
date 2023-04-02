@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { InProduction } from '@common/constants'
+import { InProduction } from '@common/config'
 
 import { createTRPCRouter, protectedProcedure } from '@server/api/trpc'
 import { OpenAI } from '@common/config'
