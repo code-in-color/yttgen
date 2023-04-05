@@ -13,7 +13,8 @@ const server = z.object({
   GITHUB_CLIENT_SECRET: z.string(),
   NEXT_PUBLIC_SUPABASE_URL: z.string(),
   NEXT_PUBLIC_SUPABASE_ANON_KEY: z.string(),
-  OPEN_AI_API_KEY: z.string()
+  OPEN_AI_API_KEY: z.string(),
+  YOUTUBE_API_KEY: z.string()
 })
 
 /**
@@ -39,7 +40,8 @@ const processEnv = {
   GITHUB_CLIENT_SECRET: process.env.GITHUB_CLIENT_SECRET,
   NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL,
   NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
-  OPEN_AI_API_KEY: process.env.OPEN_AI_API_KEY
+  OPEN_AI_API_KEY: process.env.OPEN_AI_API_KEY,
+  YOUTUBE_API_KEY: process.env.YOUTUBE_API_KEY
   // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
 }
 
