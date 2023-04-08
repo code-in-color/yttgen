@@ -11,6 +11,10 @@ model Profile {
   id String @id
 
   generatedTitles GeneratedTitle[]
+  handle          String           @unique
+  firstName       String
+  lastName        String
+  profileImage    String?
 
   @@map("profiles")
 }
