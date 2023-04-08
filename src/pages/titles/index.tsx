@@ -3,6 +3,7 @@ import { prisma } from '@server/db'
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import type { Session, User } from '@supabase/supabase-js'
 import type { GetServerSidePropsContext } from 'next'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 import superjson from 'superjson'
 
@@ -19,6 +20,17 @@ const Titles: React.FC<Props> = ({ data }) => {
 
   async function onTitleClicked(titleId: string) {
     return await router.push(`titles/${titleId}`)
+  }
+
+  if (!titles.length) {
+    return (
+      <>
+        <p>No titles</p>
+        <button className=" border border-yellow-400 px-4 py-2">
+          <Link href="/app">Create My First Title!</Link>
+        </button>
+      </>
+    )
   }
 
   return (

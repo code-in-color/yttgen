@@ -1,13 +1,29 @@
-import type { GetServerSidePropsContext } from 'next'
+import type { GeneratedTitle, Profile } from '@prisma/client'
 import { prisma } from '@server/db'
-import { Profile } from '@prisma/client'
+import type { GetServerSidePropsContext } from 'next'
+import superjson from 'superjson'
 
 interface Props {
-  readonly userProfile: Profile
+  readonly data: string
 }
 
-const Profile: React.FC<Props> = ({ userProfile }) => {
-  return <pre>{JSON.stringify(userProfile, null, 2)}</pre>
+const ProfilePage: React.FC<Props> = ({ data }) => {
+  const userProfile = superjson.parse<
+    Profile & { generatedTitles: GeneratedTitle[] }
+  >(data)
+  const { firstName, lastName } = userProfile
+  const titles = userProfile.generatedTitles
+  return (
+    <>
+      <p>{firstName}</p>
+      <p>{lastName}</p>
+      <ol>
+        {titles.map((title) => (
+          <li key={title.id}>{title.title}</li>
+        ))}
+      </ol>
+    </>
+  )
 }
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
@@ -24,14 +40,17 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const profile = await prisma.profile.findUnique({
     where: {
       handle: handle
+    },
+    include: {
+      generatedTitles: true
     }
   })
 
   return {
     props: {
-      userProfile: profile
+      data: superjson.stringify(profile)
     }
   }
 }
 
-export default Profile
+export default ProfilePage
