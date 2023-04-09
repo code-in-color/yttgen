@@ -86,5 +86,30 @@ export const youtubeRouter = createTRPCRouter({
       } catch (error) {
         console.error('`getTitle` failed', error)
       }
+    }),
+  addPost: protectedProcedure
+    .input(
+      z.object({
+        title: z.string(),
+        contentUrl: z.string().url()
+      })
+    )
+    .mutation(async ({ input, ctx }): Promise<void> => {
+      const {
+        prisma,
+        session: { user }
+      } = ctx
+
+      try {
+        void (await prisma.post.create({
+          data: {
+            user: user.id,
+            title: input.title,
+            contentUrl: input.contentUrl
+          }
+        }))
+      } catch (err) {
+        console.error('Adding post failed', err)
+      }
     })
 })
