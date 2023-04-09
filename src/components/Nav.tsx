@@ -42,14 +42,19 @@ const Nav = () => {
     : routes.filter((route) => route.id !== 'logout')
 
   return (
-    <nav>
-      <ul className="flex gap-8">
-        {[...links].map((page) => (
-          <li key={page.id}>
-            <Link href={page.path}>{page.name}</Link>
-          </li>
-        ))}
-      </ul>
+    <nav className="bg-blue-500 p-4">
+      <div className="container mx-auto">
+        <ul className="flex items-center justify-between">
+          {[...links].map((page) => (
+            <li
+              key={page.id}
+              className={page.id === 'logout' ? 'ml-auto' : 'mr-4 py-2 text-xl'}
+            >
+              <Link href={page.path}>{page.name}</Link>
+            </li>
+          ))}
+        </ul>
+      </div>
     </nav>
   )
 }
