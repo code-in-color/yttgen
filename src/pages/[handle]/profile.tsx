@@ -1,4 +1,4 @@
-import { Profile } from '@prisma/client'
+import { type Profile } from '@prisma/client'
 import { prisma } from '@server/db'
 import type { GetServerSidePropsContext, NextPage } from 'next'
 import superjson from 'superjson'
@@ -10,7 +10,12 @@ interface Props {
 const ProfilePage: NextPage<Props> = ({ data }) => {
   const userProfile = superjson.parse<Profile>(data)
 
-  const onAddSocialProfileClicked = () => {}
+  const onAddSocialProfileClicked = () => {
+    try {
+    } catch (err) {
+      console.error('Adding profile failed', err)
+    }
+  }
 
   return (
     <div className="flex flex-col gap-4">
@@ -26,7 +31,9 @@ const ProfilePage: NextPage<Props> = ({ data }) => {
         </label>
         <input type="text" name="url-input" />
       </div>
-      <button>Add Social Profile</button>
+      <button onClick={() => void onAddSocialProfileClicked()}>
+        Add Social Profile
+      </button>
       Edit profile page
     </div>
   )
