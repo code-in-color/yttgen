@@ -8,7 +8,7 @@ interface Props {
   readonly data: string
 }
 
-const ProfilePage: React.FC<Props> = ({ data }) => {
+const PublicProfilePage: React.FC<Props> = ({ data }) => {
   console.log('userProfile', data)
   const userProfile = superjson.parse<Profile & { posts: Post[] }>(data)
 
@@ -92,4 +92,4 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   }
 }
 
-export default ProfilePage
+export default PublicProfilePage
