@@ -10,17 +10,18 @@ datasource db {
 model Profile {
   id String @id
 
-  generatedTitles GeneratedTitle[]
-  handle          String           @unique
-  firstName       String
-  lastName        String
-  profileImage    String?
+  handle       String  @unique
+  firstName    String
+  lastName     String
+  profileImage String?
+
+  titles Title[]
   posts  Post[]
 
   @@map("profiles")
 }
 
-model GeneratedTitle {
+model Title {
   id     String @id @default(cuid())
   user   String
   prompt String
@@ -31,7 +32,6 @@ model GeneratedTitle {
 
   profile Profile @relation(fields: [user], references: [id])
 
-  @@map("generated_titles")
   @@map("titles")
 }
 

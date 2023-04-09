@@ -1,27 +1,23 @@
 import { z } from 'zod'
-import { InProduction } from '@common/constants'
 
-import { createTRPCRouter, protectedProcedure } from '@server/api/trpc'
 import { OpenAI } from '@common/config'
-import axios from 'axios'
+import { createTRPCRouter, protectedProcedure } from '@server/api/trpc'
 import { prisma } from '@server/db'
+import axios from 'axios'
 
 const generatePrompt = (description: string) =>
   `Create catchy and click-baity YouTube title that's 🔥 using the following video description\n --- \n${description}\n ---`
 
 export const youtubeRouter = createTRPCRouter({
-  generateTitle: protectedProcedure
+  createTitle: protectedProcedure
     .input(z.string().min(140, 'Give me something, bruv'))
     .mutation(async ({ input: description }): Promise<string | undefined> => {
       try {
-        !InProduction && console.log('Description\n', description)
         const completion = await OpenAI.createCompletion({
           model: 'text-davinci-003',
           prompt: generatePrompt(description),
           max_tokens: 16
         })
-
-        !InProduction && console.log('Completions', completion.data)
 
         return completion?.data?.choices[0]?.text || ''
       } catch (e) {
@@ -46,7 +42,7 @@ export const youtubeRouter = createTRPCRouter({
       const { prisma, session } = ctx
 
       try {
-        await prisma.generatedTitle.create({
+        await prisma.title.create({
           data: {
             prompt: prompt,
             title: title,
@@ -57,11 +53,11 @@ export const youtubeRouter = createTRPCRouter({
         console.error('`saveSomething` failed', error)
       }
     }),
-  getTitles: protectedProcedure.query(async ({ ctx }) => {
+  listTitles: protectedProcedure.query(async ({ ctx }) => {
     const { id: userId } = ctx.session.user
     console.log('UserID', userId)
     try {
-      const history = await prisma.generatedTitle.findMany({
+      const history = await prisma.title.findMany({
         where: { user: userId }
       })
       return history
@@ -74,7 +70,7 @@ export const youtubeRouter = createTRPCRouter({
     .query(async ({ input, ctx }) => {
       const { id: userId } = ctx.session.user
       try {
-        const title = await prisma.generatedTitle.findUnique({
+        const title = await prisma.title.findUnique({
           where: { id: input }
         })
 
