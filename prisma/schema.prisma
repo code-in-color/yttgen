@@ -15,6 +15,7 @@ model Profile {
   firstName       String
   lastName        String
   profileImage    String?
+  posts  Post[]
 
   @@map("profiles")
 }
@@ -31,4 +32,19 @@ model GeneratedTitle {
   profile Profile @relation(fields: [user], references: [id])
 
   @@map("generated_titles")
+  @@map("titles")
+}
+
+model Post {
+  id         String @id @default(cuid())
+  user       String
+  contentUrl String
+  title      String
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime?
+
+  profile Profile @relation(fields: [user], references: [id])
+
+  @@map("posts")
 }
