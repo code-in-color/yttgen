@@ -14,13 +14,25 @@ const ProfilePage: React.FC<Props> = ({ data }) => {
 
   const { handle, posts } = userProfile
 
+  const subscribeOneSignal = async () => {
+    console.log('Subbing...')
+    // Reqeuest for notification permission in the browser
+    // Create a new user on OneSignal with web push subscription
+    // Open a form with types of content to sub too
+    // Set datatags with content subscription choices
+
+    await Promise.resolve()
+  }
+
   return (
     <>
-      <p>{handle}</p>
+      <button onClick={() => void subscribeOneSignal()}>Subscribe</button>
+      <h1>{handle}</h1>
       <p>figuring shit out</p>
       <ul>
-        <li></li>
-        <Link href="https://youtube.com/c/iamwillshepherd">YouTube</Link>
+        <li>
+          <Link href="https://youtube.com/c/iamwillshepherd">YouTube</Link>
+        </li>
         <li>
           <Link href="https://twitch.tv/codeincolor">Twitch</Link>
         </li>
