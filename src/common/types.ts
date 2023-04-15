@@ -1,6 +1,6 @@
-export type Platfom = 'YouTube' | 'LinkedIn' | 'Twitch' | 'Twitter'
+export type Platform = 'YouTube' | 'LinkedIn' | 'Twitch' | 'Twitter'
 
 export interface SocialProfile {
-  readonly platform: Platfom
+  readonly platform: Platform
   readonly url: string
 }
