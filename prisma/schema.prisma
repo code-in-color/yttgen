@@ -14,7 +14,7 @@ model Profile {
   firstName      String
   lastName       String
   profileImage   String?
-  socialProfiles Json    @default("{}")
+  socialProfiles Json    @default("[]")
 
   titles Title[]
   posts  Post[]
