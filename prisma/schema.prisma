@@ -10,10 +10,11 @@ datasource db {
 model Profile {
   id String @id
 
-  handle       String  @unique
-  firstName    String
-  lastName     String
-  profileImage String?
+  handle         String  @unique
+  firstName      String
+  lastName       String
+  profileImage   String?
+  socialProfiles Json    @default("[]")
 
   titles Title[]
   posts  Post[]

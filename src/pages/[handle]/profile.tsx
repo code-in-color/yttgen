@@ -1,5 +1,3 @@
-import { type SocialProfile } from '@common/types'
-import { type Profile } from '@prisma/client'
 import { api } from '@server/api/api'
 import { prisma } from '@server/db'
 import type { GetServerSidePropsContext, NextPage } from 'next'
