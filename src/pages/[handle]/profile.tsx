@@ -1,4 +1,6 @@
-import { Profile } from '@prisma/client'
+import { type SocialProfile } from '@common/types'
+import { type Profile } from '@prisma/client'
+import { api } from '@server/api/api'
 import { prisma } from '@server/db'
 import type { GetServerSidePropsContext, NextPage } from 'next'
 import superjson from 'superjson'
@@ -8,12 +10,35 @@ interface Props {
 }
 
 const ProfilePage: NextPage<Props> = ({ data }) => {
-  const userProfile = superjson.parse<Profile>(data)
+  const addProfileMut = api.youtube.addProfile.useMutation()
+  // const userProfile = superjson.parse<Profile>(data)
+  // const { socialProfiles } = userProfile
 
-  const onAddSocialProfileClicked = () => {}
+  // console.log('Social profiles', socialProfiles)
+
+  // const profiles = superjson.parse<ReadonlyArray<SocialProfile>>(
+  //   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  //   socialProfiles!.toString()
+  // )
+
+  const onAddSocialProfileClicked = async () => {
+    try {
+      await addProfileMut.mutateAsync({
+        platform: 'YouTube',
+        url: 'https://youtube.com/c/iamwillshepherd'
+      })
+    } catch (err) {
+      console.error('Adding profile failed', err)
+    }
+  }
 
   return (
     <div className="flex flex-col gap-4">
+      {/* <ul className="text-white">
+        {profiles.map((p) => (
+          <li key={p.url}>{p.platform}</li>
+        ))}
+      </ul> */}
       <div>
         <label className="block" htmlFor="platform-input">
           Social Media Platform
@@ -26,7 +51,9 @@ const ProfilePage: NextPage<Props> = ({ data }) => {
         </label>
         <input type="text" name="url-input" />
       </div>
-      <button>Add Social Profile</button>
+      <button onClick={() => void onAddSocialProfileClicked()}>
+        Add Social Profile
+      </button>
       Edit profile page
     </div>
   )
