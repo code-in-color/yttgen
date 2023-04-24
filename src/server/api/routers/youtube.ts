@@ -1,11 +1,11 @@
 import { z } from 'zod'
 
 import { OpenAI } from '@common/config'
+import type { Platform, SocialProfile } from '@common/types'
+import { type Prisma } from '@prisma/client'
 import { createTRPCRouter, protectedProcedure } from '@server/api/trpc'
 import { prisma } from '@server/db'
 import axios from 'axios'
-import type { SocialProfile, Platform } from '@common/types'
-import { Prisma } from '@prisma/client'
 
 const generatePrompt = (description: string) =>
   `Create catchy and click-baity YouTube title that's 🔥 using the following video description\n --- \n${description}\n ---`
@@ -123,6 +123,8 @@ export const youtubeRouter = createTRPCRouter({
         session: { user }
       } = ctx
 
+      console.log('Adding profile')
+
       try {
         const existingProfile = await prisma.profile.findUnique({
           where: {
@@ -134,19 +136,22 @@ export const youtubeRouter = createTRPCRouter({
           return
         }
 
-        const existingSocialProfiles =
-          existingProfile.socialProfiles as unknown as SocialProfile[]
-        const updatedSocialProfiles: Prisma.JsonArray = [
-          ...existingSocialProfiles,
-          { platform: input.platform as Platform, url: '' }
-        ]
+        const json = existingProfile.socialProfiles
+        if (json == null || typeof json !== 'object' || !Array.isArray(json)) {
+          return
+        }
 
-        console.log(existingSocialProfiles)
+        const newProfile: SocialProfile = {
+          platform: input.platform as Platform,
+          url: input.url
+        }
+
+        json.push(newProfile as unknown as Prisma.JsonValue)
 
         await prisma.profile.update({
           where: { id: user.id },
           data: {
-            socialProfiles: updatedSocialProfiles
+            socialProfiles: json
           }
         })
       } catch (error) {}

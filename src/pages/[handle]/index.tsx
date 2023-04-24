@@ -2,6 +2,7 @@ import type { Post, Profile } from '@prisma/client'
 import { prisma } from '@server/db'
 import type { GetServerSidePropsContext } from 'next'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import superjson from 'superjson'
 
 interface Props {
@@ -9,40 +10,23 @@ interface Props {
 }
 
 const PublicProfilePage: React.FC<Props> = ({ data }) => {
-  console.log('userProfile', data)
+  const router = useRouter()
   const userProfile = superjson.parse<Profile & { posts: Post[] }>(data)
 
   const { handle, posts } = userProfile
 
-  const subscribeOneSignal = async () => {
-    console.log('Subbing...')
-    // Reqeuest for notification permission in the browser
-    // Create a new user on OneSignal with web push subscription
-    // Open a form with types of content to sub too
-    // Set datatags with content subscription choices
-
-    await Promise.resolve()
+  const onEditProfile = async () => {
+    await router.push(`${handle}/edit-profile`)
   }
 
   return (
     <>
-      <button onClick={() => void subscribeOneSignal()}>Subscribe</button>
+      <button onClick={() => console.log('Subscriptions not implemented')}>
+        Subscribe
+      </button>
       <h1>{handle}</h1>
       <p>figuring shit out</p>
-      <ul>
-        <li>
-          <Link href="https://youtube.com/c/iamwillshepherd">YouTube</Link>
-        </li>
-        <li>
-          <Link href="https://twitch.tv/codeincolor">Twitch</Link>
-        </li>
-        <li>
-          <Link href="https://linkin/in/williamrshepherd">LinkedIn</Link>
-        </li>
-        <li>
-          <Link href="http://instagram/iamwillshepherd">Instagram</Link>
-        </li>
-      </ul>
+
       <ol>
         {posts.map((post) => (
           <li className="border border-blue-400 px-4 py-2" key={post.id}>
@@ -52,6 +36,12 @@ const PublicProfilePage: React.FC<Props> = ({ data }) => {
           </li>
         ))}
       </ol>
+      <button
+        className="border border-yellow-400 px-4 py-2"
+        onClick={() => void onEditProfile()}
+      >
+        Edit Profile
+      </button>
     </>
   )
 }
