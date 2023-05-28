@@ -19,7 +19,8 @@ You need to have the following accounts setup to:
 4. Start **Docker Desktop**
 5. Navigate to the repo in the CLI, `cd ~/<path-to-repo>`
 6. Start Supabase, `supabase start`
-7. Start the application, `yarn dev`
+7. Create Database, `db:push:schema`
+8. Start the application, `yarn dev`
 
 ### Dependencies
 
