@@ -17,14 +17,14 @@ You need to have the following accounts setup to:
 * [Supabase CLI](https://supabase.com/docs/guides/cli)
 * [Node.js 18.*](https://nodejs.org/en/download)
 
-### Environment
+### Environment setup
 
-* Set Discord OAuth credentials
-* Set Github OAuth credentials
-* Set Supabase credentials
-* Set Open AI credentials
+Before you run the project, you need to set environment variables.
 
-#### How to get Discord OAuth credentials
+1. Copy the example environement file, `cp .env.example .env.local`
+2. Set the values
+
+#### Discord OAuth credentials
 
 1. Navigate to the [Discord Developer Portal](https://discord.com/developers/applications) and select **New Application**
 2. Name the application `yttgen` and select **Create**
@@ -32,7 +32,7 @@ You need to have the following accounts setup to:
 4. Set `DISCORD_CLIENT_ID` to the **Cliend ID** located under the Client information header
 5. `DISCORD_CLIENT_SECRET`
 
-#### How to get GitHub OAuth credentials
+#### GitHub OAuth credentials
 
 1. Navigate to your [profile settings](https://github.com/settings/profile)
 2. [Create a new GitHub app](https://github.com/settings/apps/new)
@@ -44,7 +44,7 @@ You need to have the following accounts setup to:
 8. Select **Generate a new client secret** located in the **Client secrets** section
 9. Set `GITHUB_CLIENT_SECRET` to the generated client secret
 
-#### How to get Supabase credentials
+#### Supabase credentials
 
 1. Navigate to your Supabase account
 2. Select **New Project** and the org you'd like it to be created under
@@ -59,7 +59,7 @@ You need to have the following accounts setup to:
 11. Navigate to **Database Settings**
 12. Set `DATABASE_URL` to **Host** in the **Connection info** section
 
-#### How to get Open AI credentials
+#### Open AI credentials
 
 1. Navigate to [API Keys pages](https://platform.openai.com/account/api-keys)
 2. Select **Create new secret key**
