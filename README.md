@@ -1,6 +1,15 @@
 # YouTube Title Generator
 
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+This is my _excuse for content_ project. It exists because I wanted something to do in my [DevLog](https://youtube.com/playlist?list=PLHTZjQ3iWQR_SpWOgahABzZsiW5u-xf7v) series. This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+
+## Features
+
+- [x] Generate a title given a video description.
+- [ ] Generate a thumnail given a title, video description, and prompt.
+- [ ] Generate a list of tags for a video given the URL.
+- [ ] Automatically assign videos to relevant playlist based on title and description.
+- [x] List previously generated titles.
+- [ ] Automatically improve titles of previously published videos.
 
 ## Getting Started
 
@@ -48,9 +57,9 @@ Before you run the project, you need to set environment variables.
 1. Navigate to your [profile settings](https://github.com/settings/profile)
 2. [Create a new GitHub app](https://github.com/settings/apps/new)
 3. Name app `yttgen`
-4. Set **Homepage URL** to a URL you own.
+4. Set **Homepage URL** to a URL you own
 5. Set the **Callback URL** to `http://localhost:3000/authorize`
-6. Select **Register application** to complete the setup.
+6. Select **Register application** to complete the setup
 7. Set `GITHUB_CLIENT_ID` to the **Client ID**
 8. Select **Generate a new client secret** located in the **Client secrets** section
 9. Set `GITHUB_CLIENT_SECRET` to the generated client secret
