@@ -4,6 +4,8 @@ This is my _excuse for content_ project. It exists because I wanted something to
 
 ## Features
 
+As this is a excuse project, the feature set is mostly made up on the spot while I build. Expect this list to grow over time.
+
 - [x] Generate a title given a video description.
 - [ ] Generate a thumnail given a title, video description, and prompt.
 - [ ] Generate a list of tags for a video given the URL.
