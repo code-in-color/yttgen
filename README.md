@@ -11,6 +11,16 @@ You need to have the following accounts setup to:
 * [GitHub](https://github.com/signup?ref_cta=Sign+up&ref_loc=header+logged+out&ref_page=%2F&source=header-home)
 * [Supabase](https://supabase.com/dashboard/sign-up)
 
+## Running yttgen
+
+1. Clone the repo, `git clone https://github.com/code-in-color/yttgen.git`
+2. Install dependencies, `yarn`
+3. Configure environement (refer to Environment setup)
+4. Start **Docker Desktop**
+5. Navigate to the repo in the CLI, `cd ~/<path-to-repo>`
+6. Start Supabase, `supabase start`
+7. Start the application, `yarn dev`
+
 ### Dependencies
 
 * [Docker Desktop](https://www.docker.com/products/docker-desktop/)
