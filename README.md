@@ -56,7 +56,7 @@ Before you run the project, you need to set environment variables.
 
 #### GitHub OAuth credentials
 
-1. [Create a new GitHub app](https://github.com/settings/apps/new)
+1. [Create a new GitHub OAuth Application](https://github.com/settings/applications/new)
 1. Name app `yttgen`
 1. Set **Homepage URL** to a URL you own
 1. Set the **Callback URL** to `http://localhost:3000/authorize`
