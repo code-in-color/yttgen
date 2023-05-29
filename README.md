@@ -56,15 +56,14 @@ Before you run the project, you need to set environment variables.
 
 #### GitHub OAuth credentials
 
-1. Navigate to your [profile settings](https://github.com/settings/profile)
-2. [Create a new GitHub app](https://github.com/settings/apps/new)
-3. Name app `yttgen`
-4. Set **Homepage URL** to a URL you own
-5. Set the **Callback URL** to `http://localhost:3000/authorize`
-6. Select **Register application** to complete the setup
-7. Set `GITHUB_CLIENT_ID` to the **Client ID**
-8. Select **Generate a new client secret** located in the **Client secrets** section
-9. Set `GITHUB_CLIENT_SECRET` to the generated client secret
+1. [Create a new GitHub app](https://github.com/settings/apps/new)
+1. Name app `yttgen`
+1. Set **Homepage URL** to a URL you own
+1. Set the **Callback URL** to `http://localhost:3000/authorize`
+1. Select **Register application** to complete the setup
+1. Set `GITHUB_CLIENT_ID` to the **Client ID**
+1. Select **Generate a new client secret** located in the **Client secrets** section
+1. Set `GITHUB_CLIENT_SECRET` to the generated client secret
 
 #### Supabase credentials
 
