@@ -10,12 +10,19 @@ datasource db {
 model Profile {
   id String @id
 
-  generatedTitles GeneratedTitle[]
+  handle         String  @unique
+  firstName      String
+  lastName       String
+  profileImage   String?
+  socialProfiles Json    @default("[]")
+
+  titles Title[]
+  posts  Post[]
 
   @@map("profiles")
 }
 
-model GeneratedTitle {
+model Title {
   id     String @id @default(cuid())
   user   String
   prompt String
@@ -26,5 +33,19 @@ model GeneratedTitle {
 
   profile Profile @relation(fields: [user], references: [id])
 
-  @@map("generated_titles")
+  @@map("titles")
+}
+
+model Post {
+  id         String @id @default(cuid())
+  user       String
+  contentUrl String
+  title      String
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime?
+
+  profile Profile @relation(fields: [user], references: [id])
+
+  @@map("posts")
 }

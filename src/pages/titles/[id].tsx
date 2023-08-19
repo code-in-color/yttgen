@@ -1,4 +1,4 @@
-import { type GeneratedTitle } from '@prisma/client'
+import { type Title } from '@prisma/client'
 import { prisma } from '@server/db'
 import {
   createServerSupabaseClient,
@@ -15,7 +15,7 @@ interface Props {
 }
 
 const Title: React.FC<Props> = ({ data }) => {
-  const title = superjson.parse<GeneratedTitle>(data)
+  const title = superjson.parse<Title>(data)
 
   return (
     <main className="flex flex-col items-center">
@@ -50,7 +50,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     }
   }
 
-  const title = await prisma.generatedTitle.findUnique({
+  const title = await prisma.title.findUnique({
     where: {
       id: titleId
     }

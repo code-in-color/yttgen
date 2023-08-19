@@ -1,27 +1,25 @@
 import { z } from 'zod'
-import { InProduction } from '@common/constants'
 
-import { createTRPCRouter, protectedProcedure } from '@server/api/trpc'
 import { OpenAI } from '@common/config'
-import axios from 'axios'
+import type { Platform, SocialProfile } from '@common/types'
+import { type Prisma } from '@prisma/client'
+import { createTRPCRouter, protectedProcedure } from '@server/api/trpc'
 import { prisma } from '@server/db'
+import axios from 'axios'
 
 const generatePrompt = (description: string) =>
   `Create catchy and click-baity YouTube title that's 🔥 using the following video description\n --- \n${description}\n ---`
 
 export const youtubeRouter = createTRPCRouter({
-  generateTitle: protectedProcedure
+  createTitle: protectedProcedure
     .input(z.string().min(140, 'Give me something, bruv'))
     .mutation(async ({ input: description }): Promise<string | undefined> => {
       try {
-        !InProduction && console.log('Description\n', description)
         const completion = await OpenAI.createCompletion({
           model: 'text-davinci-003',
           prompt: generatePrompt(description),
           max_tokens: 16
         })
-
-        !InProduction && console.log('Completions', completion.data)
 
         return completion?.data?.choices[0]?.text || ''
       } catch (e) {
@@ -46,7 +44,7 @@ export const youtubeRouter = createTRPCRouter({
       const { prisma, session } = ctx
 
       try {
-        await prisma.generatedTitle.create({
+        await prisma.title.create({
           data: {
             prompt: prompt,
             title: title,
@@ -57,11 +55,11 @@ export const youtubeRouter = createTRPCRouter({
         console.error('`saveSomething` failed', error)
       }
     }),
-  getTitles: protectedProcedure.query(async ({ ctx }) => {
+  listTitles: protectedProcedure.query(async ({ ctx }) => {
     const { id: userId } = ctx.session.user
     console.log('UserID', userId)
     try {
-      const history = await prisma.generatedTitle.findMany({
+      const history = await prisma.title.findMany({
         where: { user: userId }
       })
       return history
@@ -74,7 +72,7 @@ export const youtubeRouter = createTRPCRouter({
     .query(async ({ input, ctx }) => {
       const { id: userId } = ctx.session.user
       try {
-        const title = await prisma.generatedTitle.findUnique({
+        const title = await prisma.title.findUnique({
           where: { id: input }
         })
 
@@ -86,5 +84,76 @@ export const youtubeRouter = createTRPCRouter({
       } catch (error) {
         console.error('`getTitle` failed', error)
       }
+    }),
+  addPost: protectedProcedure
+    .input(
+      z.object({
+        title: z.string(),
+        contentUrl: z.string().url()
+      })
+    )
+    .mutation(async ({ input, ctx }): Promise<void> => {
+      const {
+        prisma,
+        session: { user }
+      } = ctx
+
+      try {
+        void (await prisma.post.create({
+          data: {
+            user: user.id,
+            title: input.title,
+            contentUrl: input.contentUrl
+          }
+        }))
+      } catch (err) {
+        console.error('Adding post failed', err)
+      }
+    }),
+  addProfile: protectedProcedure
+    .input(
+      z.object({
+        platform: z.string(),
+        url: z.string().url()
+      })
+    )
+    .mutation(async ({ input, ctx }): Promise<void> => {
+      const {
+        prisma,
+        session: { user }
+      } = ctx
+
+      console.log('Adding profile')
+
+      try {
+        const existingProfile = await prisma.profile.findUnique({
+          where: {
+            id: user.id
+          }
+        })
+
+        if (!existingProfile) {
+          return
+        }
+
+        const json = existingProfile.socialProfiles
+        if (json == null || typeof json !== 'object' || !Array.isArray(json)) {
+          return
+        }
+
+        const newProfile: SocialProfile = {
+          platform: input.platform as Platform,
+          url: input.url
+        }
+
+        json.push(newProfile as unknown as Prisma.JsonValue)
+
+        await prisma.profile.update({
+          where: { id: user.id },
+          data: {
+            socialProfiles: json
+          }
+        })
+      } catch (error) {}
     })
 })

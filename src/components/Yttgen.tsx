@@ -10,7 +10,7 @@ const Yttgen: React.FC = () => {
   const session = useSession()
   const [generatedTitle, setGeneratedTitle] = useState('')
   const saveTitle = api.youtube.saveTitle.useMutation()
-  const generateTitle = api.youtube.generateTitle.useMutation({
+  const createTitle = api.youtube.createTitle.useMutation({
     onSuccess: (title, prompt) => {
       if (!title) return
 
@@ -28,9 +28,9 @@ const Yttgen: React.FC = () => {
     }
   })
 
-  const onGenerateTitleClicked = () => {
+  const onTitleCreated = () => {
     const { description } = getFormValues()
-    generateTitle.mutate(description)
+    createTitle.mutate(description)
   }
 
   return (
@@ -51,7 +51,7 @@ const Yttgen: React.FC = () => {
 
             <button
               type="button"
-              onClick={() => void onGenerateTitleClicked()}
+              onClick={() => void onTitleCreated()}
               className="w-72 border border-blue-600 px-4  py-3 font-semibold text-white no-underline transition hover:border-yellow-300"
             >
               Generate Title
